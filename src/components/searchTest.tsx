@@ -1,7 +1,8 @@
 
 import * as React from "react"
+import { useState, useContext } from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
-
+import { SearchSuccessContext } from "@/contexts/searchContext"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -39,8 +40,13 @@ const cities = [
 export function ComboboxDemo() {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
+  const { updateSearchSuccess, searchSuccess } = useContext(SearchSuccessContext);
+
+
 
   return (
+    // This includes a modified version of the CommandInputIcon that removes the search icon
+    // Go to definition to see the changes
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
@@ -56,7 +62,7 @@ export function ComboboxDemo() {
       <PopoverContent className="w-[300px] p-0 bg-gray-600">
         <Command className="bg-gray-400 text-white">
           <CommandInputWithoutIcon/>
-          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandEmpty>Couldn't find the city you were looking for.</CommandEmpty>
           <CommandList className=" bg-gray-400">
             {cities.map((city) => (
               <CommandItem
@@ -65,6 +71,10 @@ export function ComboboxDemo() {
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue)
                   setOpen(false)
+                  updateSearchSuccess(true)
+                  console.log(searchSuccess)
+
+
                   
                 }}
                 

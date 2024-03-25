@@ -7,10 +7,15 @@
 
 @layer base {
   :root {
-    --background: 221 39% 11%;
+    --background: 240 16% 9%;
     --foreground: 0 0% 100%;
 
     --blue-light: 219, 84%, 76%;
+    
+    --iw-gray-600 : 240 16% 11%;
+    --iw-gray-400:  240 11% 55%;
+    --iw-gray-300:  240 17% 72%;
+    --iw-gray-200:  240 20% 79%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
