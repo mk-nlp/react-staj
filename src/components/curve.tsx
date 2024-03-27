@@ -11,13 +11,17 @@ const CurveLine = () => {
     let circles = document.getElementsByTagName("circle");
     for (let i = 0; i < circles.length; i++) {
       circles[i].remove();
-      // Recursion here to make sure all circles are removed
-      //and not missed by timing issues at mount as this function is called in useEffect
-      if ( circles.length > 0 ) DestroyCircles();
     }
+    // Recursion here to make sure all circles are removed
+      //and not missed by timing issues at mount as this function is called in useEffect
+    if ( circles.length > 0 ) DestroyCircles();
+    
   }
 
- const [screenWidth, setScreenWidth] = useState(600);
+
+
+ const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+ // Data arrays for the curves
  const [data, setData] = useState([
   [0,0],
   [100, 50],
@@ -38,6 +42,10 @@ const [data2, setData2] = useState([
   [0, 100],
 ]);
 
+
+
+
+
 function handleResize() {
   setScreenWidth(window.innerWidth);
 }
@@ -45,11 +53,12 @@ function handleResize() {
 // This useEffect hook is for destroying the above
 // mentioned circles on mount and
 // also for handling the resizing of svg elements
-  useEffect(() => {
-    DestroyCircles();
-    handleResize();
-    
-  }, []);
+useEffect(() => {
+  DestroyCircles();
+  handleResize(); // Call handleResize immediately when the component mounts
+  window.addEventListener('resize', handleResize);
+  return () => window.removeEventListener('resize', handleResize);
+}, []);
 
   // This useEffect hook is for updating the data array
   // every 1/60th of a second.
@@ -84,7 +93,7 @@ function handleResize() {
           data={data2}
           stroke="#3B3B54"
           fill="transparent"
-        > 
+        >
         </NaturalCurve>
       </svg>
     </div>
@@ -99,8 +108,8 @@ const FlippedCurveLine = () => {
     let circles = document.getElementsByTagName("circle");
     for (let i = 0; i < circles.length; i++) {
       circles[i].remove();
-      if ( circles.length > 0 ) DestroyCircles();
     }
+    if ( circles.length > 0 ) DestroyCircles();
   }
   const [screenWidth, setScreenWidth] = useState(600);
 
@@ -133,6 +142,8 @@ const FlippedCurveLine = () => {
   useEffect(() => {
     DestroyCircles();
     handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {

@@ -2,26 +2,97 @@ import './App.css';
 import LandingPage from './pages/landingPage';
 import ResultPage from './pages/resultPage';
 import { SearchSuccessProvider, SearchSuccessContext } from './contexts/searchContext';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { WeatherDetailContext, WeatherDetailProvider} from './contexts/weatherDetailContext';
+import { ErrorProvider } from './contexts/errorContext';
+
+
+
+
+
+
+// Animation for the page transition
+const animateUp = {
+  hidden: { opacity: 0, y: '100vh' }, // Transitions in the y-axis, bottom to top. Change vh to vw for left to right
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: '-100vh' }
+};
+
+const UpTransition = {
+  type: 'tween',
+  ease: 'anticipate',
+  duration: 3
+};
 
 function Content() {
   const { searchSuccess } = useContext(SearchSuccessContext);
   console.log(searchSuccess);
-  if (searchSuccess) {
-    return <ResultPage />;
-  }
-  return <LandingPage />;
+  const [transition, setTransition] = useState("hidden");
+
+
+  // Here, we are reserving time for the result page to load before transitioning
+  // to the result page. This is to prevent the result page from appearing in a laggy way.
+  // Timeouts below 1500 make it laggy and ruin the transition effect.
+function smoothTransition() {
+  setTimeout(() => {
+    setTransition("visible");
+    console.log("Transitioning");
+  }, 1800);
+
+}
+
+// This useEffect hook is for transitioning to the result page
+// when the search is successful.
+// I use the searchSuccess state here as a dependency to trigger the transition.
+useEffect(() => {
+  searchSuccess ? smoothTransition() : setTransition("hidden");
+}
+, [searchSuccess]);
+
+
+
+
+  return (
+    <AnimatePresence>
+      {!searchSuccess && (
+        <motion.div
+          key="landingPage"
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          variants={animateUp}
+          transition={UpTransition}
+        >
+          <LandingPage />
+        </motion.div>
+      )}
+      {searchSuccess &&  (
+        <motion.div
+          key="resultPage"
+          initial="hidden"
+          animate={transition}
+          exit="exit"
+          variants={animateUp}
+          transition={UpTransition}
+        >
+          <ResultPage />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }
 
 function App() {
   return (
-    <SearchSuccessProvider>
-      <Content />
-    </SearchSuccessProvider>
+    <ErrorProvider>
+      <WeatherDetailProvider>
+        <SearchSuccessProvider>
+          <Content />
+        </SearchSuccessProvider>
+      </WeatherDetailProvider>
+    </ErrorProvider>
   );
 }
 
 export default App;
-
-
-/// <reference types="vite-plugin-svgr/client" />
