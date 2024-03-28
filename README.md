@@ -13,7 +13,7 @@ This is a submission for the iWeather React Staj. It is a simple weather applica
 
 ## Live Demo
 
-To be added. The application is currently in development.
+[Click here to view the live demo.](https://iweather-react-staj.netlify.app/)
 
 ## Features
 
