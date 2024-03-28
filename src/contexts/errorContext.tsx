@@ -1,11 +1,13 @@
-import { createContext, useState } from 'react';
+import{ createContext, useState } from 'react';
 
 export const ErrorContext = createContext({
   error: "",
-  updateError: (value: string) => {},
+  updateError: (_value: string) => {},
 });
 
-export const ErrorProvider = ({ children }) => {
+import { ReactNode } from 'react';
+
+export const ErrorProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState("");
 
   const updateError = (value: string) => {

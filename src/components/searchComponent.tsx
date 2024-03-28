@@ -1,8 +1,6 @@
 
-import React, { useState } from 'react';
 import { ComboboxDemo } from './searchTest';
-import { SearchSuccessProvider } from '../contexts/searchContext';
-import { Button } from './ui/button';
+
 
 const SearchComponent = () => {
 

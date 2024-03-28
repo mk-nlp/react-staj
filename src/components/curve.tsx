@@ -82,7 +82,7 @@ useEffect(() => {
     <div style={{position: 'relative'}}>
       <svg width={screenWidth} height="250" style={{position: 'absolute', top: 0, left: -300}}>
         <NaturalCurve
-          data={data}
+          data={data.map(point => [point[0], point[1]])}
           stroke="#3B3B54"
           fill="transparent"
         >
@@ -90,7 +90,7 @@ useEffect(() => {
       </svg>
       <svg width={screenWidth} height="250" style={{position: 'absolute', top: 0, left: -300}}>
         <NaturalCurve
-          data={data2}
+          data={data2.map(point => [point[0], point[1]])}
           stroke="#3B3B54"
           fill="transparent"
         >
@@ -165,7 +165,7 @@ const FlippedCurveLine = () => {
     <div style={{position: 'relative'}}>
       <svg width={screenWidth} height="250" style={{position: 'absolute', top: 0, left: -300, transform: 'scaleY(-1)'}}>
         <NaturalCurve
-          data={data}
+          data={data.map(point => [point[0], point[1]])}
           stroke="#3B3B54"
           fill="transparent"
         >
@@ -173,7 +173,7 @@ const FlippedCurveLine = () => {
       </svg>
       <svg width={screenWidth} height="250" style={{position: 'absolute', top: 0, left: -300, transform: 'scaleY(-1)'}}>
         <NaturalCurve
-          data={data2}
+          data={data2.map(point => [point[0], point[1]])}
           stroke="#3B3B54"
           fill="transparent"
         >

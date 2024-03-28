@@ -1,9 +1,7 @@
 
-import * as React from "react"
 import { useState, useContext, useEffect } from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
+import { Check } from "lucide-react"
 import { SearchSuccessContext } from "@/contexts/searchContext"
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import SpinnerIcon from "@/assets/weather-detail-icons/spinner-gap.svg"
 import { getGeocode } from "@/api/geocode"
@@ -21,10 +19,9 @@ import {
 } from "@/components/ui/popover"
 import { motion } from "framer-motion"
 
-import { WeatherDetailContext, WeatherDetailProvider } from "@/contexts/weatherDetailContext"
+import { WeatherDetailContext } from "@/contexts/weatherDetailContext"
 import { getWeatherDetails } from "@/api/weatherDetails"
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import PreviousCitiesContext from "@/contexts/previousCitiesContext"
 import ErrorContext from "@/contexts/errorContext"
 
@@ -33,21 +30,18 @@ import ErrorContext from "@/contexts/errorContext"
 export function ComboboxDemo() {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
-  const { updateSearchSuccess, searchSuccess } = useContext(SearchSuccessContext);
+  const { updateSearchSuccess } = useContext(SearchSuccessContext);
   const [loading, setLoading ] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const { addCity, previousCities, removeCity } = useContext(PreviousCitiesContext);
-  const [cities, setCities] = useState([...previousCities]);
+  const { addCity, previousCities } = useContext(PreviousCitiesContext);
+  const [cities, setCities] = useState([...previousCities]) as any[];
   const [disabled, setDisabled] = useState(false);
   const [displayValue, setDisplayValue] = useState("");
   const [debouncedInputValue, setDebouncedInputValue] = useState("");
-  const [hourIndex, setHourIndex] = useState(0);
   const { updateWeatherDetails } = useContext(WeatherDetailContext);
-  const [timeOffSet, setTimeOffSet] = useState(0);
-  const [timeDifference, setTimeDifference] = useState(0);
   const weatherDetails = useContext(WeatherDetailContext);
-  const { updateError, error } = useContext(ErrorContext);
+  const { updateError } = useContext(ErrorContext);
 
   
 
@@ -87,7 +81,7 @@ export function ComboboxDemo() {
 
 
 // Function to set the day stage based on the local time
-  function setDayStage(localTime) {
+  function setDayStage(localTime: Date) {
     if (localTime.getHours() >= 5 && localTime.getHours() < 6) 
     {
       return "Sunrise";
@@ -122,7 +116,7 @@ export function ComboboxDemo() {
   }
   
   // Function to get the day based on the local time
-  function getDay(localTime) {
+  function getDay(localTime: Date) {
     const day = localTime.getDay();
     const month = localTime.getMonth();
     const year = localTime.getFullYear();
@@ -137,14 +131,12 @@ export function ComboboxDemo() {
   , [weatherDetails]);
 
 
-  function mockApiCall(city) {
+  function mockApiCall(city: { id: any; label: any; value?: any; latitude: any; longitude: any }) {
     setLoading(true);
      // At this point the cities array should have only one element
      // as it has been filtered by the user's selection 
     getWeatherDetails(city.latitude, city.longitude) 
       .then((data) => {
-        // Get the UTC offset in seconds from the API response
-        setTimeOffSet(data.utc_offset_seconds);
         // Get the current UTC time in milliseconds
         const utcTimeInMS = new Date().getTime();
         // Calculate the target time based on the UTC offset and the local time
@@ -161,15 +153,18 @@ export function ComboboxDemo() {
           dayStage: setDayStage(targetTime),
           cityName: city.label,
           day: getDay(targetTime),
-          weatherInterpretation: wmoCodes[data.current.weather_code],
-          dailyInterpretation: data.daily.weather_code.map(code => wmoCodes[code]),
+          weatherInterpretation: wmoCodes[data.current.weather_code as keyof typeof wmoCodes],
+          dailyInterpretation: data.daily.weather_code.map((code: keyof typeof wmoCodes) => wmoCodes[code]),
           dailyMinTemperature: data.daily.temperature_2m_min,
           dailyMaxTemperature: data.daily.temperature_2m_max,
         };
-        updateWeatherDetails(mappedData);
+        updateWeatherDetails({
+          ...mappedData,
+          offsetSeconds: data.utc_offset_seconds
+        });
         // Add the city to the previous cities context
         // if it's not already there
-        if (!previousCities.some(prevCity => prevCity.id === city.id)) {
+        if (!previousCities.some((prevCity: { id: any }) => prevCity.id === city.id)) {
           addCity(city);
         }
         updateSearchSuccess(true);
@@ -199,7 +194,7 @@ function ApiCall(inputValue : string) {
   getGeocode(inputValue)
   .then((data) => {
     if (data.results) {
-      setCities(data.results.map((city) => ({
+      setCities(data.results.map((city: { id: any; name: string; admin1: string; country: string; latitude: any; longitude: any }) => ({
         id: city.id,
         label: city.name + ", " + city.admin1 + " - " + city.country,
         value: city.name + ", " + city.country,
@@ -244,7 +239,7 @@ useEffect(() => {
 // to change the component. So here is the function to convert the Turkish
 // characters to English characters.
 function converTurkishCharacters(inputValue : string) {
-  const map = {
+  const map: { [key: string]: string } = {
     'ı': 'i',
     'İ': 'i',
     'ş': 'ş',
@@ -282,7 +277,7 @@ function converTurkishCharacters(inputValue : string) {
           className="w-[300px] justify-between bg-iwgray600 text-iwgray200"
         >
           {value
-            ? cities.find((city) => city.value === value)?.label
+            ? (cities.find((city: { value: string; label: string} ) => city.value === value) as unknown as { value: string; label: string })?.label
             : "Search Location"}
           {loading ? (
             <motion.div 
@@ -342,7 +337,7 @@ function converTurkishCharacters(inputValue : string) {
          </Button>
           </CommandEmpty>
           <CommandList className=" bg-iwgray600">
-            {cities.map((city) => (
+            {cities.map((city: any) => (
               <CommandItem
                 key={city.id}
                 value={city.label}
@@ -356,10 +351,10 @@ function converTurkishCharacters(inputValue : string) {
                     latitude: city.latitude,
                     longitude: city.longitude,
                   };
-                  setCities([selectedCity]);
-                  setOpen(false)
-                  setDisabled(true)
-                  mockApiCall(selectedCity)
+                  setCities([selectedCity] as any[]);
+                  setOpen(false);
+                  setDisabled(true);
+                  mockApiCall(selectedCity);
                 }}
               >
                 {city.label}

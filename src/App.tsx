@@ -4,7 +4,7 @@ import ResultPage from './pages/resultPage';
 import { SearchSuccessProvider, SearchSuccessContext } from './contexts/searchContext';
 import { useContext, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { WeatherDetailContext, WeatherDetailProvider} from './contexts/weatherDetailContext';
+import { WeatherDetailProvider} from './contexts/weatherDetailContext';
 import { ErrorProvider } from './contexts/errorContext';
 import { PreviousCitiesProvider } from './contexts/previousCitiesContext';
 

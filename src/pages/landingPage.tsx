@@ -1,5 +1,4 @@
 import BrandComponent from "@/components/brandComponent";
-import { ComboboxDemo } from "@/components/searchTest";
 import SearchComponent from "@/components/searchComponent";
 import CurveLine, { FlippedCurveLine } from '../components/curve';
 import {  Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";

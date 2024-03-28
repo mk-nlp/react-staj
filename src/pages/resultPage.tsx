@@ -20,7 +20,6 @@ import { WeatherDetailContext } from '@/contexts/weatherDetailContext'
 import { SearchSuccessContext } from "@/contexts/searchContext"
 import { useContext, useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { ArrowRight } from 'lucide-react'
 import { XIcon } from 'lucide-react'
 import { SearchIcon } from 'lucide-react'
 import { PreviousCitiesContext } from '@/contexts/previousCitiesContext'
@@ -70,8 +69,8 @@ const ResultPage = () => {
 
   // The dayStageClassMap object maps the dayStage to a CSS class 
   //that will be used to style the background of weather result.
-  // CSS classes are defined in tailwind.config.js
-  const dayStageClassMap = {
+  // CSS classes are defined in tailwind.config.js  
+  const dayStageClassMap: { [key: string]: string } = {
     "Sunrise": "bg-sunset",
     "Morning": "bg-morning",
     "Noon": "bg-noon",
@@ -83,7 +82,6 @@ const ResultPage = () => {
     "Evening-3": "bg-evening-3",
     "Night": "bg-night"
   };
-  
   const bgClass = dayStageClassMap[dayStage] || "bg-midnight";
 
   useEffect(() => {
@@ -91,11 +89,11 @@ const ResultPage = () => {
     const dayStagesNight = ["Evening", "Evening-2", "Evening-3", "Night", "Midnight"];
     let dailyIcons = [];
     const words = weatherInterpretation.toLowerCase().split(' '); // Split the weatherInterpretation into words so we can check for weather conditions.
-    const dailyInterpretationWords = dailyInterpretation.map((interpretation) => interpretation.toLowerCase().split(' '));
+    const dailyInterpretationWords = (dailyInterpretation as string[]).map((interpretation) => interpretation.toLowerCase().split(' '));
 
 
   
-    const weatherIconsDay = {
+    const weatherIconsDay = { 
       "rain": WeatherSitRepRainDay,
       "clear": WeatherSitRepClearDay,
       "overcast": WeatherSitRepCloudyDay,
@@ -109,7 +107,7 @@ const ResultPage = () => {
       "grains": WeatherSitRepRainDay,
     };
   
-    const weatherIconsNight = {
+    const weatherIconsNight: { [key: string]: string } = {
       "rain": WeatherSitRepRainNight,
       "clear": WeatherSitRepClearNight,
       "overcast": WeatherSitRepCloudyNight,
@@ -127,19 +125,19 @@ const ResultPage = () => {
     for (let i = 0; i < dailyInterpretationWords.length; i++) {
       for (let weatherCondition in weatherIconsDay) {
         if (dailyInterpretationWords[i].some(word => word === weatherCondition)) {
-          dailyIcons.push(weatherIconsDay[weatherCondition]);
+          dailyIcons.push(weatherIconsDay[weatherCondition as keyof typeof weatherIconsDay]);
         }
       }
     }
-    setDailyIcons(dailyIcons);
+    setDailyIcons(dailyIcons as never[]);
 
     for (let weatherCondition in weatherIconsDay) {
       if (words.includes(weatherCondition)) {
         if (dayStagesDay.includes(dayStage)) {
-          UpdateCurrentIcon(weatherIconsDay[weatherCondition]);
+          UpdateCurrentIcon(weatherIconsDay[weatherCondition as keyof typeof weatherIconsDay]);
           return;
         } else if (dayStagesNight.includes(dayStage)) {
-          UpdateCurrentIcon(weatherIconsNight[weatherCondition]);
+          UpdateCurrentIcon(weatherIconsNight[weatherCondition as keyof typeof weatherIconsNight]);
           return;
         }
       }
@@ -252,7 +250,7 @@ useEffect(() => {
           </Button>
           </div>
           <div className='grid justify-center'>
-          <Dialog open={open} onOpenChange={setOpen} className=" border border-iwgray600">
+          <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger>
               <Button className="flex items-center w-[300px] mt-5 mb-5 bg-red-900  font-bold">
                 Forget about me

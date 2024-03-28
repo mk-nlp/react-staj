@@ -2,12 +2,12 @@ import React, { createContext, useState, useEffect } from 'react';
 
 export const PreviousCitiesContext = createContext({
   previousCities: [],
-  addCity: (city) => {},
-  removeCity: (city) => {},
+  addCity: (_city: any) => {},
+  removeCity: (_city: any) => {},
   clearLocalStorage: () => {},
 });
 
-export const PreviousCitiesProvider = ({ children }) => {
+export const PreviousCitiesProvider = ({ children }: { children: React.ReactNode }) => {
   const [previousCities, setPreviousCities] = useState(() => {
     const localData = localStorage.getItem('previousCities');
     return localData ? JSON.parse(localData) : [];
@@ -17,14 +17,14 @@ export const PreviousCitiesProvider = ({ children }) => {
     localStorage.setItem('previousCities', JSON.stringify(previousCities));
   }, [previousCities]);
 
-  const addCity = (city) => {
+  const addCity = (city: any) => {
     if (!previousCities.includes(city)) {
       setPreviousCities([...previousCities, city]);
     }
   };
 
-  const removeCity = (city) => {
-    setPreviousCities(previousCities.filter((item) => item !== city));
+  const removeCity = (city: any) => {
+    setPreviousCities(previousCities.filter((item: any) => item !== city));
   };
 
   const clearLocalStorage = () => {
