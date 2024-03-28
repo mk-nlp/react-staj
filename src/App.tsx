@@ -6,6 +6,7 @@ import { useContext, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { WeatherDetailContext, WeatherDetailProvider} from './contexts/weatherDetailContext';
 import { ErrorProvider } from './contexts/errorContext';
+import { PreviousCitiesProvider } from './contexts/previousCitiesContext';
 
 
 
@@ -22,12 +23,11 @@ const animateUp = {
 const UpTransition = {
   type: 'tween',
   ease: 'anticipate',
-  duration: 3
+  duration: 2
 };
 
 function Content() {
   const { searchSuccess } = useContext(SearchSuccessContext);
-  console.log(searchSuccess);
   const [transition, setTransition] = useState("hidden");
 
 
@@ -37,8 +37,7 @@ function Content() {
 function smoothTransition() {
   setTimeout(() => {
     setTransition("visible");
-    console.log("Transitioning");
-  }, 1800);
+  }, 0);
 
 }
 
@@ -54,7 +53,7 @@ useEffect(() => {
 
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode='wait'>
       {!searchSuccess && (
         <motion.div
           key="landingPage"
@@ -85,13 +84,15 @@ useEffect(() => {
 
 function App() {
   return (
-    <ErrorProvider>
-      <WeatherDetailProvider>
-        <SearchSuccessProvider>
-          <Content />
-        </SearchSuccessProvider>
-      </WeatherDetailProvider>
-    </ErrorProvider>
+    <PreviousCitiesProvider>
+      <ErrorProvider>
+        <WeatherDetailProvider>
+          <SearchSuccessProvider>
+            <Content />
+          </SearchSuccessProvider>
+        </WeatherDetailProvider>
+      </ErrorProvider>
+    </PreviousCitiesProvider>
   );
 }
 

@@ -25,6 +25,8 @@ import { WeatherDetailContext, WeatherDetailProvider } from "@/contexts/weatherD
 import { getWeatherDetails } from "@/api/weatherDetails"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import PreviousCitiesContext from "@/contexts/previousCitiesContext"
+import ErrorContext from "@/contexts/errorContext"
 
 
 
@@ -35,7 +37,8 @@ export function ComboboxDemo() {
   const [loading, setLoading ] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [cities, setCities] = useState([]);
+  const { addCity, previousCities, removeCity } = useContext(PreviousCitiesContext);
+  const [cities, setCities] = useState([...previousCities]);
   const [disabled, setDisabled] = useState(false);
   const [displayValue, setDisplayValue] = useState("");
   const [debouncedInputValue, setDebouncedInputValue] = useState("");
@@ -44,6 +47,9 @@ export function ComboboxDemo() {
   const [timeOffSet, setTimeOffSet] = useState(0);
   const [timeDifference, setTimeDifference] = useState(0);
   const weatherDetails = useContext(WeatherDetailContext);
+  const { updateError, error } = useContext(ErrorContext);
+
+  
 
 
 // WMO Codes for weather interpretation
@@ -126,12 +132,16 @@ export function ComboboxDemo() {
   }
   
 
+  useEffect(() => {
+  }
+  , [weatherDetails]);
 
-  function mockApiCall() {
+
+  function mockApiCall(city) {
     setLoading(true);
      // At this point the cities array should have only one element
      // as it has been filtered by the user's selection 
-    getWeatherDetails(cities[0].latitude, cities[0].longitude) 
+    getWeatherDetails(city.latitude, city.longitude) 
       .then((data) => {
         // Get the UTC offset in seconds from the API response
         setTimeOffSet(data.utc_offset_seconds);
@@ -149,22 +159,36 @@ export function ComboboxDemo() {
           airHumidity: data.hourly.relative_humidity_2m[hourIndexCalc],
           UVIndex: data.hourly.uv_index[hourIndexCalc],
           dayStage: setDayStage(targetTime),
-          cityName: cities[0].value,
+          cityName: city.label,
           day: getDay(targetTime),
           weatherInterpretation: wmoCodes[data.current.weather_code],
+          dailyInterpretation: data.daily.weather_code.map(code => wmoCodes[code]),
+          dailyMinTemperature: data.daily.temperature_2m_min,
+          dailyMaxTemperature: data.daily.temperature_2m_max,
         };
         updateWeatherDetails(mappedData);
+        // Add the city to the previous cities context
+        // if it's not already there
+        if (!previousCities.some(prevCity => prevCity.id === city.id)) {
+          addCity(city);
+        }
         updateSearchSuccess(true);
         setLoading(false);
         setLoaded(true);
       })
       .catch((error) => {
         console.log(error);
+        updateError(error);
+        setLoading(false);
+        setLoaded(false);
       });
   }
 
 
 
+useEffect(() => {
+}
+, [cities]);
 
 
 // Function to call the geocode API
@@ -177,7 +201,7 @@ function ApiCall(inputValue : string) {
     if (data.results) {
       setCities(data.results.map((city) => ({
         id: city.id,
-        label: city.name + ", " + city.admin1 + "- " + city.country,
+        label: city.name + ", " + city.admin1 + " - " + city.country,
         value: city.name + ", " + city.country,
         latitude: city.latitude,
         longitude: city.longitude,
@@ -216,7 +240,7 @@ useEffect(() => {
 
 // Okay, so this is really stupid but I had to convert the Turkish characters
 // to English characters because the component doesn't autocomplete the Turkish
-// characters. I know, I know, it's stupid but was too deep into the project
+// characters. I know, I know, it's stupid but I was too deep into the project
 // to change the component. So here is the function to convert the Turkish
 // characters to English characters.
 function converTurkishCharacters(inputValue : string) {
@@ -242,24 +266,14 @@ function converTurkishCharacters(inputValue : string) {
 
 
 
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-      const later = () => {
-          clearTimeout(timeout);
-          func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-  };
-};
 
 
 
 
   return (
-    // This includes a modified version of the CommandInputIcon that removes the search icon
+    // This includes a modified version of the CommandInputIcon component that removes the search icon
     // Go to definition to see the changes
+    <div className="flex flex-col gap-5">
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
@@ -334,18 +348,18 @@ function debounce(func, wait) {
                 value={city.label}
                 disabled={disabled}
                 onSelect={() => {
-                  setValue(city.value)
-                  setCities([{
+                  setValue(city.value);
+                  const selectedCity = {
                     id: city.id,
                     label: city.label,
                     value: city.value,
                     latitude: city.latitude,
                     longitude: city.longitude,
-                  }])
+                  };
+                  setCities([selectedCity]);
                   setOpen(false)
                   setDisabled(true)
-                  mockApiCall()
-                  console.log(searchSuccess)
+                  mockApiCall(selectedCity)
                 }}
               >
                 {city.label}
@@ -355,6 +369,29 @@ function debounce(func, wait) {
         </Command>
       </PopoverContent>
     </Popover>
+    <Button className="bg-iwgray600 text-iwgray200 font-bold" onClick={() => {
+      // Get the current location and send it to the API
+      // Will ask user for permission
+      // Works fine on PC but not iOS and macOS (can't test on Android)
+      // For it to work on iOS and macOS, the site must be served over HTTPS
+      navigator.geolocation.getCurrentPosition((position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        const currentLocation = {
+          id: 0,
+          label: "Current Location",
+          value: "Current Location",
+          latitude: latitude,
+          longitude: longitude,
+        };
+        setCities([currentLocation]);
+        mockApiCall(currentLocation);
+      });
+    }
+    }>
+      Get current location
+    </Button>
+    </div>
   )
 }
 

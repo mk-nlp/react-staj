@@ -1,15 +1,14 @@
-
-const BASE_URL = 'https://geocoding-api.open-meteo.com/v1/search?name=\{\}&count=3&language=en&format=json'
+import axios from "axios";
 
 export async function getGeocode(city) {
+  const BASE_URL = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=3&language=en&format=json`;
   try {
-    const response = await fetch(BASE_URL.replace('\{\}', city))
-    if (!response.ok) {
-      return "HTTP error! status: " + response.status
+    const response = await axios.get(BASE_URL);
+    if (response.status !== 200) {
+      return "HTTP error! status: " + response.status;
     }
-    const data = await response.json()
-    return data
+    return response.data;
   } catch (error) {
-    return error
+    return error;
   }
 }

@@ -11,6 +11,9 @@ export const WeatherDetailContext = createContext({
   day: "",
   offsetSeconds: 0,
   weatherInterpretation: "",
+  dailyInterpretation: [],
+  dailyMinTemperature: [],
+  dailyMaxTemperature: [],
 });
 
 export const WeatherDetailProvider = ({ children }) => {
@@ -24,6 +27,10 @@ export const WeatherDetailProvider = ({ children }) => {
   const [day, setDay] = useState("");
   const [offsetSeconds, setOffsetSeconds] = useState(0);
   const [weatherInterpretation, setWeatherInterpretation] = useState("");
+  const [dailyInterpretation, setDailyInterpretation] = useState([]);
+  const [dailyMinTemperature, setDailyMinTemperature] = useState([]);
+  const [dailyMaxTemperature, setDailyMaxTemperature] = useState([]);
+
   
   const updateWeatherDetails = (data) => {
     setThermalSensation(data.thermalSensation);
@@ -36,11 +43,14 @@ export const WeatherDetailProvider = ({ children }) => {
     setDay(data.day);
     setOffsetSeconds(data.offsetSeconds);
     setWeatherInterpretation(data.weatherInterpretation);
+    setDailyInterpretation(data.dailyInterpretation);
+    setDailyMinTemperature(data.dailyMinTemperature);
+    setDailyMaxTemperature(data.dailyMaxTemperature);
   };
 
 
   return (
-    <WeatherDetailContext.Provider value={{ thermalSensation, probabilityOfPrecipitation, windSpeed, airHumidity, UVIndex, dayStage, cityName, day, offsetSeconds, weatherInterpretation, updateWeatherDetails }}>
+    <WeatherDetailContext.Provider value={{ thermalSensation, probabilityOfPrecipitation, windSpeed, airHumidity, UVIndex, dayStage, cityName, day, offsetSeconds, weatherInterpretation, dailyInterpretation, dailyMaxTemperature, dailyMinTemperature, updateWeatherDetails }}>
       {children}
     </WeatherDetailContext.Provider>
   );
