@@ -3,6 +3,11 @@ export const WeatherForecast = ({
   dailyIcons,
   dailyMinTemperature,
   dailyMaxTemperature,
+}: {
+  fourDaysAfter: string[];
+  dailyIcons: string[];
+  dailyMinTemperature: number[];
+  dailyMaxTemperature: number[];
 }) => {
   return (
     <>

@@ -8,31 +8,19 @@ import WeatherSitRepRainDay from "../assets/weather-condition-icons/Weather=Rain
 import WeatherSitRepRainNight from "../assets/weather-condition-icons/Weather=Rain, Moment=Night.svg";
 import WeatherSitRepFewCloudsDay from "../assets/weather-condition-icons/Weather=Few clouds, Moment=Day.svg";
 import WeatherSitRepFewCloudsNight from "../assets/weather-condition-icons/Weather=Few clouds, Moment=Night.svg";
-import ThermalSensation from "../assets/weather-detail-icons/thermo-light.svg";
-import RainProb from "../assets/weather-detail-icons/cloud-rain-light.svg";
-import WindSpeed from "../assets/weather-detail-icons/Wind-light.svg";
-import AirHumidity from "../assets/weather-detail-icons/drop-light.svg";
+import ThermalSensationIcon from "../assets/weather-detail-icons/thermo-light.svg";
+import RainProbIcon from "../assets/weather-detail-icons/cloud-rain-light.svg";
+import WindSpeedIcon from "../assets/weather-detail-icons/Wind-light.svg";
+import AirHumidityIcon from "../assets/weather-detail-icons/drop-light.svg";
 import UVIndexIcon from "../assets/weather-detail-icons/sun-light.svg";
 
 import { WeatherDetailContext } from "@/contexts/weatherDetailContext";
-import { SearchSuccessContext } from "@/contexts/searchContext";
 import { useContext, useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { XIcon } from "lucide-react";
-import { SearchIcon } from "lucide-react";
-import { PreviousCitiesContext } from "@/contexts/previousCitiesContext";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
 import { WeatherGraphics } from "@/components/weatherGraphics";
 import { WeatherDetails } from "@/components/weatherDetails";
 import { WeatherForecast } from "@/components/weatherForecast";
+import { SearchAnotherButton } from "@/components/searchAnother";
+import { ForgetAboutMe } from "@/components/forgetAboutMe";
 
 const ResultPage = () => {
   // Context values come from the WeatherDetailContext, updated by the LandingPage at this stage of the application.
@@ -52,9 +40,6 @@ const ResultPage = () => {
   } = useContext(WeatherDetailContext);
   const [currentIcon, UpdateCurrentIcon] = useState(WeatherSitRepClearDay);
   const fourDaysAfter = useFourDaysAfterToday();
-  const { updateSearchSuccess } = useContext(SearchSuccessContext);
-  const { clearLocalStorage } = useContext(PreviousCitiesContext);
-  const [open, setOpen] = useState(false);
   const [dailyIcons, setDailyIcons] = useState([]); // This state is used to store the daily weather icons.
 
   function useFourDaysAfterToday() {
@@ -203,10 +188,10 @@ const ResultPage = () => {
 
         <div className="grid  col-span-3 row-span-1 rounded-2xl grid-cols-12 p-4  grid-rows-0 bg-iwgray600 md:col-start-2">
           <WeatherDetails
-            ThermalSensation={ThermalSensation}
-            RainProb={RainProb}
-            WindSpeed={WindSpeed}
-            AirHumidity={AirHumidity}
+            ThermalSensationIcon={ThermalSensationIcon}
+            RainProbIcon={RainProbIcon}
+            WindSpeedIcon={WindSpeedIcon}
+            AirHumidityIcon={AirHumidityIcon}
             UVIndexIcon={UVIndexIcon}
             thermalSensation={thermalSensation}
             probabilityOfPrecipitation={probabilityOfPrecipitation}
@@ -225,51 +210,10 @@ const ResultPage = () => {
         </div>
       </div>
       <div className="grid justify-center">
-        <Button
-          className="flex items-center w-[300px] mt-5 mb-5 bg-iwgray600  font-bold"
-          onClick={() => updateSearchSuccess(false)}
-        >
-          Search for another location
-          <SearchIcon className="w-6 h-6 ml-2" />
-        </Button>
+        <SearchAnotherButton />
       </div>
       <div className="grid justify-center">
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger>
-            <Button className="flex items-center w-[300px] mt-5 mb-5 bg-red-900  font-bold">
-              Forget about me
-              <XIcon className="w-6 h-6 ml-2" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent className=" bg-iwgray600">
-            <DialogHeader>
-              <DialogTitle className=" font-bold text-center">
-                Forget about me
-              </DialogTitle>
-            </DialogHeader>
-            <DialogDescription className=" text-iwgray300 font-bold text-center">
-              This action will clear all your previous searches.
-            </DialogDescription>
-            <div className="flex justify-end gap-2">
-              <Button
-                className="bg-red-900 font-bold"
-                onClick={() => [
-                  updateSearchSuccess(false),
-                  clearLocalStorage(),
-                  setOpen(false),
-                ]}
-              >
-                Forget about me
-              </Button>
-              <Button
-                className="bg-iwgray400 font-bold"
-                onClick={() => setOpen(false)}
-              >
-                Cancel
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <ForgetAboutMe />
       </div>
     </div>
   );

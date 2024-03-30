@@ -3,20 +3,31 @@ import { Separator } from "@/components/ui/separator";
 
 export const WeatherDetails = ({
   thermalSensation,
-  ThermalSensation,
-  RainProb,
+  ThermalSensationIcon,
+  RainProbIcon,
   probabilityOfPrecipitation,
-  WindSpeed,
+  WindSpeedIcon,
   windSpeed,
   airHumidity,
-  AirHumidity,
+  AirHumidityIcon,
   UVIndexIcon,
   UVIndex,
+}: {
+  thermalSensation: number;
+  ThermalSensationIcon: string;
+  RainProbIcon: string;
+  probabilityOfPrecipitation: number;
+  WindSpeedIcon: string;
+  windSpeed: number;
+  airHumidity: number;
+  AirHumidityIcon: string;
+  UVIndexIcon: string;
+  UVIndex: number;
 }) => {
   return (
     <>
       <div className=" grid  col-start-1 col-end-1 items-center justify-start">
-        <img className=" w-6" src={ThermalSensation} alt="UV Index" />
+        <img className=" w-6" src={ThermalSensationIcon} alt="UV Index" />
       </div>
       <div className="  grid col-start-2 col-end-7 items-center justify-start text-iwgray200 font-bold ">
         Thermal Sensation
@@ -27,7 +38,7 @@ export const WeatherDetails = ({
       <Separator className="grid col-span-12 m-0 p-0 bg-gray-800" />
 
       <div className="grid col-start-1 cold-end-2 items-center justify-start">
-        <img className=" w-6" src={RainProb} alt="Rain Probability" />
+        <img className=" w-6" src={RainProbIcon} alt="Rain Probability" />
       </div>
       <div className=" grid col-start-2 col-end-7 items-center justify-start text-iwgray200 font-bold">
         Rain Probability
@@ -38,7 +49,7 @@ export const WeatherDetails = ({
       <Separator className="grid col-span-12 m-0 p-0 bg-gray-800" />
 
       <div className="grid col-start-1 cold-end-2 items-center justify-start">
-        <img className=" w-6" src={WindSpeed} alt="Wind Speed" />
+        <img className=" w-6" src={WindSpeedIcon} alt="Wind Speed" />
       </div>
       <div className=" grid col-start-2 col-end-7 items-center justify-start text-iwgray200  font-bold">
         Wind Speed
@@ -49,7 +60,7 @@ export const WeatherDetails = ({
       <Separator className="grid col-span-12 m-0 p-0 bg-gray-800" />
 
       <div className="grid col-start-1 cold-end-2 items-center justify-start">
-        <img className=" w-6" src={AirHumidity} alt="Air Humidity" />
+        <img className=" w-6" src={AirHumidityIcon} alt="Air Humidity" />
       </div>
       <div className=" grid col-start-2 col-end-7 items-center justify-start text-iwgray200  font-bold">
         Air Humidity

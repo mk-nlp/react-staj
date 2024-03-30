@@ -9,6 +9,15 @@ export const WeatherGraphics = ({
   dailyMinTemperature,
   dailyMaxTemperature,
   weatherInterpretation,
+}: {
+  bgClass: string;
+  cityName: string;
+  day: string;
+  thermalSensation: number;
+  currentIcon: string;
+  dailyMinTemperature: number[];
+  dailyMaxTemperature: number[];
+  weatherInterpretation: string;
 }) => {
   return (
     <div
