@@ -14,7 +14,6 @@ import WindSpeed from "../assets/weather-detail-icons/Wind-light.svg";
 import AirHumidity from "../assets/weather-detail-icons/drop-light.svg";
 import UVIndexIcon from "../assets/weather-detail-icons/sun-light.svg";
 
-import { Separator } from "@/components/ui/separator";
 import { WeatherDetailContext } from "@/contexts/weatherDetailContext";
 import { SearchSuccessContext } from "@/contexts/searchContext";
 import { useContext, useEffect, useState } from "react";
@@ -30,6 +29,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
+import { WeatherGraphics } from "@/components/weatherGraphics";
+import { WeatherDetails } from "@/components/weatherDetails";
+import { WeatherForecast } from "@/components/weatherForecast";
 
 const ResultPage = () => {
   // Context values come from the WeatherDetailContext, updated by the LandingPage at this stage of the application.
@@ -187,172 +190,38 @@ const ResultPage = () => {
   return (
     <div>
       <div className="grid grid-cols-3 grid-rows-2 gap-2 p-2 md:grid-cols-5">
-        <div
-          className={`${bgClass} bg-cover bg-center grid col-span-3 row-span-1 p-2 rounded-2xl border-iwgray600 border-8 md:col-start-2`}
-        >
-          <div className="grid grid-cols-3 grid-rows-2 p-2">
-            <div className="grid col-start-1 col-end-4 justify-items-start items-center">
-              <div className=" font-sans font-bold">{cityName}</div>
-              <div className=" font-sans">{day}</div>
-            </div>
-            <div className="grid row-start-3 row-end-4 justify-items-center items-end">
-              <div className="text-6xl font-extrabold">
-                {Math.round(thermalSensation)}°C
-              </div>
-            </div>
-            <div className="grid  col-start-2 col-end-4 row-start-3 row-end-5">
-              <img
-                className=" w-64 h-60 ml-8 lg:ml-24 xl:ml-44"
-                src={currentIcon}
-                alt="WeatherSitRepCloudyNight"
-              />
-            </div>
-            <div className="grid grid-rows-1 col-start-1 row-start-4 row-end-5">
-              <div className="grid text-xl font-sans font-bold items-end">
-                {Math.round(dailyMinTemperature[0])}°C /{" "}
-                {Math.round(dailyMaxTemperature[0])}°C
-              </div>
-              <div className="font-sans text-xm ">{weatherInterpretation}</div>
-            </div>
-          </div>
-        </div>
+        <WeatherGraphics
+          bgClass={bgClass}
+          cityName={cityName}
+          day={day}
+          thermalSensation={thermalSensation}
+          currentIcon={currentIcon}
+          dailyMinTemperature={dailyMinTemperature}
+          dailyMaxTemperature={dailyMaxTemperature}
+          weatherInterpretation={weatherInterpretation}
+        />
 
         <div className="grid  col-span-3 row-span-1 rounded-2xl grid-cols-12 p-4  grid-rows-0 bg-iwgray600 md:col-start-2">
-          <div className=" grid  col-start-1 col-end-1 items-center justify-start">
-            <img className=" w-6" src={ThermalSensation} alt="UV Index" />
-          </div>
-          <div className="  grid col-start-2 col-end-7 items-center justify-start text-iwgray200 font-bold ">
-            Thermal Sensation
-          </div>
-          <div className=" grid col-start-7 col-end-13 items-center justify-end text-xl font-bold">
-            {thermalSensation}°C
-          </div>
-          <Separator className="grid col-span-12 m-0 p-0 bg-gray-800" />
-
-          <div className="grid col-start-1 cold-end-2 items-center justify-start">
-            <img className=" w-6" src={RainProb} alt="Rain Probability" />
-          </div>
-          <div className=" grid col-start-2 col-end-7 items-center justify-start text-iwgray200 font-bold">
-            Rain Probability
-          </div>
-          <div className=" grid col-start-7 col-end-13 items-center justify-end text-xl font-bold">
-            {probabilityOfPrecipitation}%
-          </div>
-          <Separator className="grid col-span-12 m-0 p-0 bg-gray-800" />
-
-          <div className="grid col-start-1 cold-end-2 items-center justify-start">
-            <img className=" w-6" src={WindSpeed} alt="Wind Speed" />
-          </div>
-          <div className=" grid col-start-2 col-end-7 items-center justify-start text-iwgray200  font-bold">
-            Wind Speed
-          </div>
-          <div className=" grid col-start-7 col-end-13 items-center justify-end text-xl font-bold">
-            {windSpeed}km/h
-          </div>
-          <Separator className="grid col-span-12 m-0 p-0 bg-gray-800" />
-
-          <div className="grid col-start-1 cold-end-2 items-center justify-start">
-            <img className=" w-6" src={AirHumidity} alt="Air Humidity" />
-          </div>
-          <div className=" grid col-start-2 col-end-7 items-center justify-start text-iwgray200  font-bold">
-            Air Humidity
-          </div>
-          <div className=" grid col-start-7 col-end-13 items-center justify-end text-xl font-bold">
-            {airHumidity}%
-          </div>
-          <Separator className="grid col-span-12 m-0 p-0  bg-gray-800" />
-
-          <div className="grid col-start-1 cold-end-2 items-center justify-start">
-            <img className=" w-6" src={UVIndexIcon} alt="UV Index" />
-          </div>
-          <div className=" grid col-start-2 col-end-7 items-center justify-start text-iwgray200   font-bold">
-            UV Index
-          </div>
-          <div className=" grid col-start-7 col-end-13 items-center justify-end text-xl font-bold">
-            {UVIndex}%
-          </div>
+          <WeatherDetails
+            ThermalSensation={ThermalSensation}
+            RainProb={RainProb}
+            WindSpeed={WindSpeed}
+            AirHumidity={AirHumidity}
+            UVIndexIcon={UVIndexIcon}
+            thermalSensation={thermalSensation}
+            probabilityOfPrecipitation={probabilityOfPrecipitation}
+            windSpeed={windSpeed}
+            airHumidity={airHumidity}
+            UVIndex={UVIndex}
+          />
         </div>
         <div className="grid  col-span-3 rounded-2xl grid-cols-5 grid-rows-1 items-start bg-iwgray600 p-4 md:col-start-2">
-          <div className=" grid col-start-1 col-end-2 items-center">
-            <div className="grid text-xl font-bold justify-center items-center">
-              {fourDaysAfter[0].slice(0, 3)}
-            </div>
-            <img
-              className="grid w-96 h-50 justify-center"
-              src={dailyIcons[0]}
-              alt="WeatherSitRepCloudyNight"
-            />
-            <div className="grid font-bold font-sans justify-center">
-              {Math.round(dailyMinTemperature[0])}°C
-            </div>
-            <div className="grid text-gray-500 font-bold font-sans justify-center">
-              {Math.round(dailyMaxTemperature[0])}°C
-            </div>
-          </div>
-          <div className=" grid col-start-2 col-end-3 items-center">
-            <div className="grid text-xl font-bold justify-center">
-              {fourDaysAfter[1].slice(0, 3)}
-            </div>
-            <img
-              className="grid w-96  h-50 justify-center"
-              src={dailyIcons[1]}
-              alt="WeatherSitRepCloudyNight"
-            />
-            <div className="grid font-bold font-sans justify-center">
-              {Math.round(dailyMinTemperature[1])}°C
-            </div>
-            <div className="grid text-gray-500 font-bold font-sans justify-center">
-              {Math.round(dailyMaxTemperature[1])}°C
-            </div>
-          </div>
-          <div className=" grid col-start-3 col-end-4 items-center">
-            <div className="grid text-xl font-bold justify-center">
-              {fourDaysAfter[2].slice(0, 3)}
-            </div>
-            <img
-              className="grid w-96  h-50 justify-center"
-              src={dailyIcons[2]}
-              alt="WeatherSitRepCloudyNight"
-            />
-            <div className="grid font-bold font-sans justify-center">
-              {Math.round(dailyMinTemperature[2])}°C
-            </div>
-            <div className="grid text-gray-500 font-bold font-sans justify-center">
-              {Math.round(dailyMaxTemperature[2])}°C
-            </div>
-          </div>
-          <div className=" grid col-start-4 col-end-5 items-center">
-            <div className="grid text-xl font-bold justify-center">
-              {fourDaysAfter[3].slice(0, 3)}
-            </div>
-            <img
-              className="grid w-96  h-50 justify-center"
-              src={dailyIcons[3]}
-              alt="WeatherSitRepCloudyNight"
-            />
-            <div className="grid font-bold font-sans justify-center">
-              {Math.round(dailyMinTemperature[3])}°C
-            </div>
-            <div className="grid text-gray-500 font-bold font-sans justify-center">
-              {Math.round(dailyMaxTemperature[3])}°C
-            </div>
-          </div>
-          <div className=" grid col-start-5 col-end-6 items-center">
-            <div className="grid text-xl font-bold justify-center">
-              {fourDaysAfter[4].slice(0, 3)}
-            </div>
-            <img
-              className="grid w-96  h-50 justify-center"
-              src={dailyIcons[4]}
-              alt="WeatherSitRepCloudyNight"
-            />
-            <div className="grid font-bold font-sans justify-center">
-              {Math.round(dailyMinTemperature[4])}°C
-            </div>
-            <div className="grid text-gray-500 font-bold font-sans justify-center">
-              {Math.round(dailyMaxTemperature[4])}°C
-            </div>
-          </div>
+          <WeatherForecast
+            fourDaysAfter={fourDaysAfter}
+            dailyIcons={dailyIcons}
+            dailyMinTemperature={dailyMinTemperature}
+            dailyMaxTemperature={dailyMaxTemperature}
+          />
         </div>
       </div>
       <div className="grid justify-center">
