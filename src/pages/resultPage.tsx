@@ -186,7 +186,7 @@ const ResultPage = () => {
           weatherInterpretation={weatherInterpretation}
         />
 
-        <div className="grid  col-span-3 row-span-1 rounded-2xl grid-cols-12 p-4  grid-rows-0 bg-iwgray600 md:col-start-2">
+        <div className="grid  col-span-3 row-span-1 rounded-2xl grid-cols-12 p-4  grid-rows-0 bg-gray800 md:col-start-2">
           <WeatherDetails
             ThermalSensationIcon={ThermalSensationIcon}
             RainProbIcon={RainProbIcon}
@@ -200,7 +200,7 @@ const ResultPage = () => {
             UVIndex={UVIndex}
           />
         </div>
-        <div className="grid  col-span-3 rounded-2xl grid-cols-5 grid-rows-1 items-start bg-iwgray600 p-4 md:col-start-2">
+        <div className="grid  col-span-3 rounded-2xl grid-cols-5 grid-rows-1 items-start bg-gray800 p-4 md:col-start-2">
           <WeatherForecast
             fourDaysAfter={fourDaysAfter}
             dailyIcons={dailyIcons}

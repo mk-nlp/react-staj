@@ -23,6 +23,7 @@ import { getWeatherDetails } from "@/api/weatherDetails";
 
 import PreviousCitiesContext from "@/contexts/previousCitiesContext";
 import ErrorContext from "@/contexts/errorContext";
+import { Loader } from "lucide-react";
 
 export function ComboboxDemo() {
   const [open, setOpen] = useState(false);
@@ -38,7 +39,7 @@ export function ComboboxDemo() {
   const [debouncedInputValue, setDebouncedInputValue] = useState("");
   const { updateWeatherDetails } = useContext(WeatherDetailContext);
   const weatherDetails = useContext(WeatherDetailContext);
-  const { updateError } = useContext(ErrorContext);
+  const { updateError, updateErrorText, error } = useContext(ErrorContext);
 
   // WMO Codes for weather interpretation
   // Check https://open-meteo.com/en/docs/ for more information
@@ -133,71 +134,79 @@ export function ComboboxDemo() {
 
   useEffect(() => {}, [weatherDetails]);
 
-  function mockApiCall(city: {
+  const mockApiCall = async (city: {
     id: any;
     label: any;
     value?: any;
     latitude: any;
     longitude: any;
-  }) {
+  }) => {
     setLoading(true);
     // At this point the cities array should have only one element
     // as it has been filtered by the user's selection
-    getWeatherDetails(city.latitude, city.longitude)
-      .then((data) => {
-        // Get the current UTC time in milliseconds
-        const utcTimeInMS = new Date().getTime();
-        // Calculate the target time based on the UTC offset and the local time
-        // I really hate working with timezones >:(
-        const targetTime = new Date(
-          utcTimeInMS +
-            data.utc_offset_seconds * 1000 +
-            new Date().getTimezoneOffset() * 60 * 1000
-        );
-        let hourIndexCalc = targetTime.getHours();
-        // Data to be mapped to the weather details context
-        const mappedData = {
-          thermalSensation: data.hourly.temperature_2m[hourIndexCalc],
-          probabilityOfPrecipitation:
-            data.hourly.precipitation_probability[hourIndexCalc],
-          windSpeed: data.hourly.wind_speed_10m[hourIndexCalc],
-          airHumidity: data.hourly.relative_humidity_2m[hourIndexCalc],
-          UVIndex: data.hourly.uv_index[hourIndexCalc],
-          dayStage: setDayStage(targetTime),
-          cityName: city.label,
-          day: getDay(targetTime),
-          weatherInterpretation:
-            wmoCodes[data.current.weather_code as keyof typeof wmoCodes],
-          dailyInterpretation: data.daily.weather_code.map(
-            (code: keyof typeof wmoCodes) => wmoCodes[code]
-          ),
-          dailyMinTemperature: data.daily.temperature_2m_min,
-          dailyMaxTemperature: data.daily.temperature_2m_max,
-        };
-        updateWeatherDetails({
-          ...mappedData,
-          offsetSeconds: data.utc_offset_seconds,
-        });
-        // Add the city to the previous cities context
-        // if it's not already there
-        if (
-          !previousCities.some(
-            (prevCity: { id: any }) => prevCity.id === city.id
-          )
-        ) {
-          addCity(city);
-        }
-        updateSearchSuccess(true);
+    try {
+      const data = await getWeatherDetails(city.latitude, city.longitude);
+      if (data.name === "AxiosError") {
+        updateError(true);
+        updateErrorText(data.message);
         setLoading(false);
-        setLoaded(true);
-      })
-      .catch((error) => {
-        console.log(error);
-        updateError(error);
+        return;
+      } else if (data.error) {
+        updateError(true);
+        updateErrorText(data.reason);
         setLoading(false);
-        setLoaded(false);
+        return;
+      }
+      // Get the current UTC time in milliseconds
+      const utcTimeInMS = new Date().getTime();
+      // Calculate the target time based on the UTC offset and the local time
+      // I really hate working with timezones >:(
+      const targetTime = new Date(
+        utcTimeInMS +
+          data.utc_offset_seconds * 1000 +
+          new Date().getTimezoneOffset() * 60 * 1000
+      );
+      let hourIndexCalc = targetTime.getHours();
+      // Data to be mapped to the weather details context
+      const mappedData = {
+        thermalSensation: data.hourly.temperature_2m[hourIndexCalc],
+        probabilityOfPrecipitation:
+          data.hourly.precipitation_probability[hourIndexCalc],
+        windSpeed: data.hourly.wind_speed_10m[hourIndexCalc],
+        airHumidity: data.hourly.relative_humidity_2m[hourIndexCalc],
+        UVIndex: data.hourly.uv_index[hourIndexCalc],
+        dayStage: setDayStage(targetTime),
+        cityName: city.label,
+        day: getDay(targetTime),
+        weatherInterpretation:
+          wmoCodes[data.current.weather_code as keyof typeof wmoCodes],
+        dailyInterpretation: data.daily.weather_code.map(
+          (code: keyof typeof wmoCodes) => wmoCodes[code]
+        ),
+        dailyMinTemperature: data.daily.temperature_2m_min,
+        dailyMaxTemperature: data.daily.temperature_2m_max,
+      };
+      updateWeatherDetails({
+        ...mappedData,
+        offsetSeconds: data.utc_offset_seconds,
       });
-  }
+      // Add the city to the previous cities context
+      // if it's not already there
+      if (
+        !previousCities.some((prevCity: { id: any }) => prevCity.id === city.id)
+      ) {
+        addCity(city);
+      }
+      updateSearchSuccess(true);
+      setLoading(false);
+      setLoaded(true);
+    } catch (error) {
+      updateError(true);
+      updateErrorText((error as Error).message);
+      setLoading(false);
+      setLoaded(false);
+    }
+  };
 
   useEffect(() => {}, [cities]);
 
@@ -228,8 +237,15 @@ export function ComboboxDemo() {
             )
           );
           return cities;
+        } else if (data.name === "AxiosError") {
+          updateError(true);
+          updateErrorText(data.message);
+        } else if (data.error) {
+          updateError(true);
+          updateErrorText(data.reason);
         } else {
-          console.error("Data is not an array");
+          updateError(true);
+          updateErrorText("No results found!");
         }
       })
       .catch((error) => {
@@ -282,6 +298,22 @@ export function ComboboxDemo() {
     return inputValue.replace(/[ıİşŞğĞçÇöÖüÜ]/g, (ch) => map[ch]).toLowerCase();
   }
 
+  // Here if the errorContext error state is true, we close the combobox
+  // this will trigger the error message to be shown to the user in the form of
+  // a toast notification. The toast will be shown for 2.5 seconds and then
+  // the error state will be set to false and the error message will be cleared.
+  useEffect(() => {
+    if (error) {
+      setOpen(false);
+      setTimeout(() => {
+        updateError(false);
+      }, 2500);
+      setTimeout(() => {
+        updateErrorText("");
+      }, 3000);
+    }
+  }, [error]);
+
   return (
     // This includes a modified version of the CommandInputIcon component that removes the search icon
     // Go to definition to see the changes
@@ -291,7 +323,7 @@ export function ComboboxDemo() {
           <Button
             role="combobox"
             aria-expanded={open}
-            className="w-[300px] justify-between bg-iwgray600 text-iwgray200"
+            className="w-[300px] h-[50px] justify-between bg-gray700 text-gray400 hover:bg-gray700 font-medium"
           >
             {value
               ? (
@@ -300,7 +332,7 @@ export function ComboboxDemo() {
                       city.value === value
                   ) as unknown as { value: string; label: string }
                 )?.label
-              : "Search Location"}
+              : "Search location"}
             {loading ? (
               <motion.div
                 animate={{
@@ -311,15 +343,19 @@ export function ComboboxDemo() {
                   repeat: Infinity,
                 }}
               >
-                <img src={SpinnerIcon} alt="loading" className="w-6 h-6" />
+                <img
+                  src={SpinnerIcon}
+                  alt="loading"
+                  className="w-6 h-6 text-gray200"
+                />
               </motion.div>
             ) : null}
 
             {loaded ? <Check className="h-4 w-4 text-green-500" /> : null}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[300px] p-0 bg-iwgray600">
-          <Command className=" bg-iwgray600 text-white">
+        <PopoverContent className="w-[300px] p-0 mt-1 bg-gray500 border-gray500">
+          <Command className="  text-white bg-gray500 border-gray500 ">
             <CommandInputWithoutIcon
               value={displayValue}
               onValueChange={(value) => {
@@ -329,7 +365,7 @@ export function ComboboxDemo() {
               }}
             />
             <CommandEmpty>
-              <Button className="w-[300px] justify-evenly bg-iwgray600 text-iwgray200">
+              <Button className="w-[300px] justify-evenly bg-iwgray400 text-iwgray200">
                 Searching...
                 <motion.div
                   animate={{
@@ -340,7 +376,7 @@ export function ComboboxDemo() {
                     repeat: Infinity,
                   }}
                 >
-                  <img src={SpinnerIcon} alt="loading" className="w-6 h-6" />
+                  <Loader className="w-6 h-6 text-gray200" />
                 </motion.div>
               </Button>
             </CommandEmpty>
@@ -373,7 +409,7 @@ export function ComboboxDemo() {
         </PopoverContent>
       </Popover>
       <Button
-        className="bg-iwgray600 text-iwgray200 font-bold"
+        className="bg-gray700 text-gray200 font-bold"
         onClick={() => {
           // Get the current location and send it to the API
           // Will ask user for permission

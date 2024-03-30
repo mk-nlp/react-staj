@@ -81,6 +81,14 @@ const CurveLine = () => {
     return () => clearInterval(interval);
   }, [data2]);
 
+  // For some reason, the webkit is just not updating the width of the svg element
+  // So, I am multiplying the window.innerWidth by 1.2 to make it work.
+  // Otherwise, the svg element would be cut off at the right side.
+  // I am not sure why this is happening, but this is a workaround.
+  // Oh, also had to disable the scrollbars on the body element in the global css file because of this.
+  useEffect(() => {
+    setScreenWidth(window.innerWidth * 1.22);
+  }, [screenWidth]);
   return (
     <div style={{ position: "relative" }}>
       <svg
@@ -90,7 +98,7 @@ const CurveLine = () => {
       >
         <NaturalCurve
           data={data.map((point) => [point[0], point[1]])}
-          stroke="#3B3B54"
+          stroke="#191e2e"
           fill="transparent"
         ></NaturalCurve>
       </svg>
@@ -101,7 +109,7 @@ const CurveLine = () => {
       >
         <NaturalCurve
           data={data2.map((point) => [point[0], point[1]])}
-          stroke="#3B3B54"
+          stroke="#191e2e"
           fill="transparent"
         ></NaturalCurve>
       </svg>
@@ -176,6 +184,10 @@ const FlippedCurveLine = () => {
     return () => clearInterval(interval);
   }, [data2]);
 
+  useEffect(() => {
+    setScreenWidth(window.innerWidth * 1.22);
+  }, [screenWidth]);
+
   return (
     <div style={{ position: "relative" }}>
       <svg
@@ -190,7 +202,7 @@ const FlippedCurveLine = () => {
       >
         <NaturalCurve
           data={data.map((point) => [point[0], point[1]])}
-          stroke="#3B3B54"
+          stroke="#191e2e"
           fill="transparent"
         ></NaturalCurve>
       </svg>
@@ -206,7 +218,7 @@ const FlippedCurveLine = () => {
       >
         <NaturalCurve
           data={data2.map((point) => [point[0], point[1]])}
-          stroke="#3B3B54"
+          stroke="#191e2e"
           fill="transparent"
         ></NaturalCurve>
       </svg>

@@ -25,7 +25,7 @@ export const ForgetAboutMe = () => {
           <XIcon className="w-6 h-6 ml-2" />
         </Button>
       </DialogTrigger>
-      <DialogContent className=" bg-iwgray600">
+      <DialogContent className=" bg-gray600 border-gray600">
         <DialogHeader>
           <DialogTitle className=" font-bold text-center">
             Forget about me
@@ -46,7 +46,7 @@ export const ForgetAboutMe = () => {
             Forget about me
           </Button>
           <Button
-            className="bg-iwgray400 font-bold"
+            className="bg-gray400 font-bold"
             onClick={() => setOpen(false)}
           >
             Cancel

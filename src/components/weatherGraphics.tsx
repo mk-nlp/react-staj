@@ -19,7 +19,7 @@ export const WeatherGraphics = ({
 }) => {
   return (
     <div
-      className={`${bgClass} bg-cover bg-center grid col-span-3 row-span-1 p-2 rounded-2xl border-iwgray600 border-8 md:col-start-2`}
+      className={`${bgClass} bg-cover bg-center grid col-span-3 row-span-1 p-2 rounded-3xl border-gray800 border-[10px] md:col-start-2`}
     >
       <div className="grid grid-cols-3 grid-rows-2 p-2">
         <div className="grid col-start-1 col-end-4 justify-items-start items-center">
@@ -28,7 +28,7 @@ export const WeatherGraphics = ({
         </div>
         <div className="grid row-start-3 row-end-4 justify-items-center items-end">
           <div className="text-6xl font-extrabold">
-            {Math.round(thermalSensation)}°C
+            {Math.round(thermalSensation)}°c
           </div>
         </div>
         <div className="grid  col-start-2 col-end-4 row-start-3 row-end-5">
@@ -40,8 +40,8 @@ export const WeatherGraphics = ({
         </div>
         <div className="grid grid-rows-1 col-start-1 row-start-4 row-end-5">
           <div className="grid text-xl font-sans font-bold items-end">
-            {Math.round(dailyMinTemperature[0])}°C /{" "}
-            {Math.round(dailyMaxTemperature[0])}°C
+            {Math.round(dailyMinTemperature[0])}°c /{" "}
+            {Math.round(dailyMaxTemperature[0])}°c
           </div>
           <div className="font-sans text-xm ">{weatherInterpretation}</div>
         </div>

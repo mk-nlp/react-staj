@@ -10,7 +10,7 @@ export const SearchAnotherButton = () => {
   return (
     <>
       <Button
-        className="flex items-center w-[300px] mt-5 mb-5 bg-iwgray600  font-bold"
+        className="flex items-center w-[300px] mt-5 mb-5 bg-gray700  font-bold"
         onClick={() => updateSearchSuccess(false)}
       >
         Search for another location
