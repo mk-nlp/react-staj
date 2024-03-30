@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-
 export const WeatherGraphics = ({
   bgClass,
   cityName,
