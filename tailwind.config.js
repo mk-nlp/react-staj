@@ -23,7 +23,6 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        bluelight: "hsl(var(--blue-light))",
         gray900: "#13131A",
         gray800: "#16161F",
         gray700: "#1C1C27",
@@ -33,6 +32,7 @@ module.exports = {
         gray300: "#ABABC4",
         gray200: "#BFBFD4",
         gray100: "#FAFAFA",
+        bluelight: "#8FB2F5",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useContext, useEffect } from "react";
 import { Check } from "lucide-react";
 import { SearchSuccessContext } from "@/contexts/searchContext";
@@ -10,6 +11,7 @@ import {
   CommandItem,
   CommandList,
   CommandInputWithoutIcon,
+  CommandSeparator,
 } from "@/components/ui/command";
 import {
   Popover,
@@ -382,27 +384,33 @@ export function ComboboxDemo() {
             </CommandEmpty>
             <CommandList className=" bg-iwgray600">
               {cities.map((city: any) => (
-                <CommandItem
-                  key={city.id}
-                  value={city.label}
-                  disabled={disabled}
-                  onSelect={() => {
-                    setValue(city.value);
-                    const selectedCity = {
-                      id: city.id,
-                      label: city.label,
-                      value: city.value,
-                      latitude: city.latitude,
-                      longitude: city.longitude,
-                    };
-                    setCities([selectedCity] as any[]);
-                    setOpen(false);
-                    setDisabled(true);
-                    mockApiCall(selectedCity);
-                  }}
-                >
-                  {city.label}
-                </CommandItem>
+                <React.Fragment key={`seperator + ${city.id}`}>
+                  <CommandItem
+                    key={city.id}
+                    value={city.label}
+                    disabled={disabled}
+                    onSelect={() => {
+                      setValue(city.value);
+                      const selectedCity = {
+                        id: city.id,
+                        label: city.label,
+                        value: city.value,
+                        latitude: city.latitude,
+                        longitude: city.longitude,
+                      };
+                      setCities([selectedCity] as any[]);
+                      setOpen(false);
+                      setDisabled(true);
+                      mockApiCall(selectedCity);
+                    }}
+                  >
+                    {city.label}
+                  </CommandItem>
+                  <CommandSeparator
+                    className="bg-gray600"
+                    key={`${city.id} + seperator`}
+                  />
+                </React.Fragment>
               ))}
             </CommandList>
           </Command>
