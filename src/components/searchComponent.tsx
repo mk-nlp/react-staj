@@ -1,4 +1,4 @@
-import { SearchPopOver } from "./searchTest";
+import { SearchPopOver } from "./searchInput";
 
 const SearchComponent = () => {
   return (
