@@ -91,7 +91,7 @@ To build the application, you can use the following command:
 npm run build
 ```
 
-The build files will be located in the `build` directory.
+The build files will be located in the `dist` directory.
 
 ## Usage
 
@@ -102,3 +102,7 @@ You can also click on the "Get Current Location" button to get the weather data 
 # Limitations
 
 - The "Get Current Location" button does not work on iOS and MacOS devices as the app is not served over HTTPS by default. (Should be fine when hosted on a server with HTTPS.)
+
+# License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
