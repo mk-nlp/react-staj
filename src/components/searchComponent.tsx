@@ -1,4 +1,4 @@
-import { ComboboxDemo } from "./searchTest";
+import { SearchPopOver } from "./searchTest";
 
 const SearchComponent = () => {
   return (
@@ -10,7 +10,7 @@ const SearchComponent = () => {
         Choose a location to see the weather forecast
       </p>
       <div className="mt-6">
-        <ComboboxDemo />
+        <SearchPopOver />
       </div>
     </>
   );

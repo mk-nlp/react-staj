@@ -5,10 +5,12 @@ This is a submission for the iWeather React Staj. It is a simple weather applica
 ## Screenshots
 
 <p float="left">
-  <img src="https://i.imgur.com/liT7mUD.png" width="220">
-  <img src="https://i.imgur.com/GfnlIy7.png" width="220">
-  <img src="https://i.imgur.com/HZ8X0Gd.png" width="220">
-  <img src="https://i.imgur.com/qmj6P8C.png" width="220">
+  <img src="https://i.imgur.com/DXgfWcy.png" width="220">
+  <img src="https://i.imgur.com/MyEnNHJ.png" width="220">
+  <img src="https://i.imgur.com/QpSEh5E.png" width="220">
+  <img src="https://i.imgur.com/XTuJsGY.png" width="220">
+  <img src="https://i.imgur.com/jm38wJR.png" width="220">
+  <img src="https://i.imgur.com/U9VXOhX.png" width="220">"
 </p>
 
 ## Live Demo
@@ -99,5 +101,4 @@ You can also click on the "Get Current Location" button to get the weather data 
 
 # Limitations
 
-- The application does not have sufficient error handling.
 - The "Get Current Location" button does not work on iOS and MacOS devices as the app is not served over HTTPS by default. (Should be fine when hosted on a server with HTTPS.)

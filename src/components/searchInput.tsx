@@ -27,7 +27,7 @@ import PreviousCitiesContext from "@/contexts/previousCitiesContext";
 import ErrorContext from "@/contexts/errorContext";
 import { Loader } from "lucide-react";
 
-export function ComboboxDemo() {
+export function SearchPopOver() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const { updateSearchSuccess } = useContext(SearchSuccessContext);
@@ -136,7 +136,7 @@ export function ComboboxDemo() {
 
   useEffect(() => {}, [weatherDetails]);
 
-  const mockApiCall = async (city: {
+  const weatherDetailsgeoCodeApiCall = async (city: {
     id: any;
     label: any;
     value?: any;
@@ -216,7 +216,7 @@ export function ComboboxDemo() {
   // Run when the debounced input value is updated
   // This function is debounced to prevent too many API
   // calls in a short time, been there, done that :(
-  function ApiCall(inputValue: string) {
+  function geoCodeApiCall(inputValue: string) {
     getGeocode(inputValue)
       .then((data) => {
         if (data.results) {
@@ -271,7 +271,7 @@ export function ComboboxDemo() {
   // a second which is enough I think.
   useEffect(() => {
     if (debouncedInputValue.length > 2) {
-      ApiCall(debouncedInputValue);
+      geoCodeApiCall(debouncedInputValue);
     }
   }, [debouncedInputValue]);
 
@@ -295,8 +295,7 @@ export function ComboboxDemo() {
       ü: "ü",
       Ü: "ü",
     };
-    // Yeah and also had to convert the input to lowercase :D, I know, I know
-    // I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm sorry
+    // Yeah and also had to convert the input to lowercase :D
     return inputValue.replace(/[ıİşŞğĞçÇöÖüÜ]/g, (ch) => map[ch]).toLowerCase();
   }
 
@@ -401,7 +400,7 @@ export function ComboboxDemo() {
                       setCities([selectedCity] as any[]);
                       setOpen(false);
                       setDisabled(true);
-                      mockApiCall(selectedCity);
+                      weatherDetailsgeoCodeApiCall(selectedCity);
                     }}
                   >
                     {city.label}
@@ -434,7 +433,7 @@ export function ComboboxDemo() {
               longitude: longitude,
             };
             setCities([currentLocation]);
-            mockApiCall(currentLocation);
+            weatherDetailsgeoCodeApiCall(currentLocation);
           });
         }}
       >
