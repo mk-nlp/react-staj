@@ -1,11 +1,11 @@
-import{ createContext, useState } from 'react';
+import { createContext, useState } from "react";
 
 export const ErrorContext = createContext({
   error: "",
   updateError: (_value: string) => {},
 });
 
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 export const ErrorProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState("");
@@ -19,7 +19,6 @@ export const ErrorProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </ErrorContext.Provider>
   );
-
-}
+};
 
 export default ErrorContext;

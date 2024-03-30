@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState } from "react";
 export const WeatherDetailContext = createContext({
   thermalSensation: 0,
   probabilityOfPrecipitation: 0,
@@ -30,10 +30,14 @@ export const WeatherDetailContext = createContext({
   }) => {},
 });
 
-
-export const WeatherDetailProvider = ({ children }: { children: React.ReactNode }) => {
+export const WeatherDetailProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [thermalSensation, setThermalSensation] = useState(0);
-  const [probabilityOfPrecipitation, setProbabilityOfPrecipitation] = useState(0);
+  const [probabilityOfPrecipitation, setProbabilityOfPrecipitation] =
+    useState(0);
   const [windSpeed, setWindSpeed] = useState(0);
   const [airHumidity, setAirHumidity] = useState(0);
   const [UVIndex, setUVIndex] = useState(0);
@@ -46,8 +50,21 @@ export const WeatherDetailProvider = ({ children }: { children: React.ReactNode 
   const [dailyMinTemperature, setDailyMinTemperature] = useState([]);
   const [dailyMaxTemperature, setDailyMaxTemperature] = useState([]);
 
-  
-  const updateWeatherDetails = (data: { thermalSensation: React.SetStateAction<number>; probabilityOfPrecipitation: React.SetStateAction<number>; windSpeed: React.SetStateAction<number>; airHumidity: React.SetStateAction<number>; UVIndex: React.SetStateAction<number>; dayStage: React.SetStateAction<string>; cityName: React.SetStateAction<string>; day: React.SetStateAction<string>; offsetSeconds: React.SetStateAction<number>; weatherInterpretation: React.SetStateAction<string>; dailyInterpretation: React.SetStateAction<never[]>; dailyMinTemperature: React.SetStateAction<never[]>; dailyMaxTemperature: React.SetStateAction<never[]>; }) => {
+  const updateWeatherDetails = (data: {
+    thermalSensation: React.SetStateAction<number>;
+    probabilityOfPrecipitation: React.SetStateAction<number>;
+    windSpeed: React.SetStateAction<number>;
+    airHumidity: React.SetStateAction<number>;
+    UVIndex: React.SetStateAction<number>;
+    dayStage: React.SetStateAction<string>;
+    cityName: React.SetStateAction<string>;
+    day: React.SetStateAction<string>;
+    offsetSeconds: React.SetStateAction<number>;
+    weatherInterpretation: React.SetStateAction<string>;
+    dailyInterpretation: React.SetStateAction<never[]>;
+    dailyMinTemperature: React.SetStateAction<never[]>;
+    dailyMaxTemperature: React.SetStateAction<never[]>;
+  }) => {
     setThermalSensation(data.thermalSensation);
     setProbabilityOfPrecipitation(data.probabilityOfPrecipitation);
     setWindSpeed(data.windSpeed);
@@ -63,11 +80,27 @@ export const WeatherDetailProvider = ({ children }: { children: React.ReactNode 
     setDailyMaxTemperature(data.dailyMaxTemperature);
   };
 
-
   return (
-    <WeatherDetailContext.Provider value={{ thermalSensation, probabilityOfPrecipitation, windSpeed, airHumidity, UVIndex, dayStage, cityName, day, offsetSeconds, weatherInterpretation, dailyInterpretation, dailyMinTemperature, dailyMaxTemperature, updateWeatherDetails }}>
+    <WeatherDetailContext.Provider
+      value={{
+        thermalSensation,
+        probabilityOfPrecipitation,
+        windSpeed,
+        airHumidity,
+        UVIndex,
+        dayStage,
+        cityName,
+        day,
+        offsetSeconds,
+        weatherInterpretation,
+        dailyInterpretation,
+        dailyMinTemperature,
+        dailyMaxTemperature,
+        updateWeatherDetails,
+      }}
+    >
       {children}
     </WeatherDetailContext.Provider>
-  )
-}
+  );
+};
 export default WeatherDetailContext;

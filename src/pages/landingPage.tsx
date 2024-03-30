@@ -1,10 +1,9 @@
 import BrandComponent from "@/components/brandComponent";
 import SearchComponent from "@/components/searchComponent";
-import CurveLine, { FlippedCurveLine } from '../components/curve';
-import {  Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import CurveLine, { FlippedCurveLine } from "../components/curve";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useContext } from "react";
 import { ErrorContext } from "@/contexts/errorContext";
-
 
 const LandingPage = () => {
   const { error } = useContext(ErrorContext);
@@ -18,16 +17,16 @@ const LandingPage = () => {
         </Alert>
       )}
       <div className=" grid justify-items-center bg-background mt-9">
-        <BrandComponent/>
+        <BrandComponent />
       </div>
       <div className="grid justify-items-center">
-        <CurveLine/>
+        <CurveLine />
       </div>
       <div className="grid justify-items-center bg-background mt-64">
-        <SearchComponent/>
+        <SearchComponent />
       </div>
       <div className="grid justify-items-center mt-22">
-        <FlippedCurveLine/>
+        <FlippedCurveLine />
       </div>
     </>
   );

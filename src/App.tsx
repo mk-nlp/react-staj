@@ -1,59 +1,51 @@
-import './App.css';
-import LandingPage from './pages/landingPage';
-import ResultPage from './pages/resultPage';
-import { SearchSuccessProvider, SearchSuccessContext } from './contexts/searchContext';
-import { useContext, useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { WeatherDetailProvider} from './contexts/weatherDetailContext';
-import { ErrorProvider } from './contexts/errorContext';
-import { PreviousCitiesProvider } from './contexts/previousCitiesContext';
-
-
-
-
-
+import "./App.css";
+import LandingPage from "./pages/landingPage";
+import ResultPage from "./pages/resultPage";
+import {
+  SearchSuccessProvider,
+  SearchSuccessContext,
+} from "./contexts/searchContext";
+import { useContext, useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { WeatherDetailProvider } from "./contexts/weatherDetailContext";
+import { ErrorProvider } from "./contexts/errorContext";
+import { PreviousCitiesProvider } from "./contexts/previousCitiesContext";
 
 // Animation for the page transition
 const animateUp = {
-  hidden: { opacity: 0, y: '100vh' }, // Transitions in the y-axis, bottom to top. Change vh to vw for left to right
+  hidden: { opacity: 0, y: "100vh" }, // Transitions in the y-axis, bottom to top. Change vh to vw for left to right
   visible: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: '-100vh' }
+  exit: { opacity: 0, y: "-100vh" },
 };
 
 const UpTransition = {
-  type: 'tween',
-  ease: 'anticipate',
-  duration: 2
+  type: "tween",
+  ease: "anticipate",
+  duration: 2,
 };
 
 function Content() {
   const { searchSuccess } = useContext(SearchSuccessContext);
   const [transition, setTransition] = useState("hidden");
 
-
   // Here, we are reserving time for the result page to load before transitioning
   // to the result page. This is to prevent the result page from appearing in a laggy way.
   // Timeouts below 1500 make it laggy and ruin the transition effect.
-function smoothTransition() {
-  setTimeout(() => {
-    setTransition("visible");
-  }, 0);
+  function smoothTransition() {
+    setTimeout(() => {
+      setTransition("visible");
+    }, 0);
+  }
 
-}
-
-// This useEffect hook is for transitioning to the result page
-// when the search is successful.
-// I use the searchSuccess state here as a dependency to trigger the transition.
-useEffect(() => {
-  searchSuccess ? smoothTransition() : setTransition("hidden");
-}
-, [searchSuccess]);
-
-
-
+  // This useEffect hook is for transitioning to the result page
+  // when the search is successful.
+  // I use the searchSuccess state here as a dependency to trigger the transition.
+  useEffect(() => {
+    searchSuccess ? smoothTransition() : setTransition("hidden");
+  }, [searchSuccess]);
 
   return (
-    <AnimatePresence mode='wait'>
+    <AnimatePresence mode="wait">
       {!searchSuccess && (
         <motion.div
           key="landingPage"
@@ -66,7 +58,7 @@ useEffect(() => {
           <LandingPage />
         </motion.div>
       )}
-      {searchSuccess &&  (
+      {searchSuccess && (
         <motion.div
           key="resultPage"
           initial="hidden"
