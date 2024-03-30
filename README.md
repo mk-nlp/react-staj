@@ -10,7 +10,7 @@ This is a submission for the iWeather React Staj. It is a simple weather applica
   <img src="https://i.imgur.com/QpSEh5E.png" width="220">
   <img src="https://i.imgur.com/XTuJsGY.png" width="220">
   <img src="https://i.imgur.com/jm38wJR.png" width="220">
-  <img src="https://i.imgur.com/U9VXOhX.png" width="220">"
+  <img src="https://i.imgur.com/U9VXOhX.png" width="220">
 </p>
 
 ## Live Demo
