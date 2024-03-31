@@ -215,6 +215,14 @@ const ResultPage = () => {
       <div className="grid justify-center">
         <ForgetAboutMe />
       </div>
+      <div>
+        <a
+          href="https://open-meteo.com/"
+          className="flex text-gray200 mt-8 justify-center font-semibold text-xs z-auto"
+        >
+          Weather data by Open-Meteo.com
+        </a>
+      </div>
     </div>
   );
 };
