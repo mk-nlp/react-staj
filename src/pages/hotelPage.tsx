@@ -7,7 +7,7 @@ import { MessageCircleWarningIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { SearchSuccessContext } from "@/contexts/searchContext";
-import HotelComponent from "./restrauntPage";
+import HotelComponent from "@/components/hotelComponent";
 
 export default function HotelPage() {
   const [hotels, setHotels] = useState<any[]>([]);
@@ -93,9 +93,7 @@ export default function HotelPage() {
     }
   }, [city, country]);
 
-  useEffect(() => {
-    console.log("We got these hotels: ", hotels);
-  }, [hotels]);
+
 
   return (
     <>
@@ -126,12 +124,12 @@ export default function HotelPage() {
         </AnimatePresence>
       </div>
       <div className="grid grid-cols-1 gap-2 p-2 md:grid-cols-5">
-        {hotels && (hotels as unknown as { elements: any[] }) ? (
+      {hotels && (hotels as any).elements ? (
           <div className="grid col-start-3 grid-cols-1">
             <div className="grid text-3xl items-center justify-center text-center font-bold">
               Hotels in {city} - {country}
               <div className=" text-sm">
-                {((hotels as unknown) as { elements: any[] }).elements.length} hotels available
+              {((hotels as any).elements || []).length} hotels available
               </div>
               <div className=" text-xs">
                 Data provided by OpenStreetMap subject to <a className="underline" href="https://www.openstreetmap.org/copyright">ODbl</a> license
@@ -141,7 +139,7 @@ export default function HotelPage() {
               </div>
             </div>
             {((hotels as unknown) as { elements: any[] }).elements
-              .filter((hotel) => hotel.tags && hotel.tags.name)
+              .filter((hotel: { tags: { name: any; }; }) => hotel.tags && hotel.tags.name)
               .map((hotel) => {
                 return (
                   <HotelComponent

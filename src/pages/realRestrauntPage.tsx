@@ -71,7 +71,7 @@ const [restraunts, setRestraunts] = useState<any[]>([]);
         if (response.elements.length === 0) {
           setTransition("visible");
           updateError(true);
-          updateErrorText("No hotels found in the area.");
+          updateErrorText("No restaurants found in the area.");
           setTimeout(() => {
             updateError(false);
           }, 3000);
@@ -93,9 +93,7 @@ const [restraunts, setRestraunts] = useState<any[]>([]);
     }
   }, [city, country]);
 
-  useEffect(() => {
-    console.log("We got these hotels: ", restraunts);
-  }, [restraunts]);
+
 
   return (
     <>

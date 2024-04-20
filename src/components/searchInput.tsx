@@ -251,7 +251,8 @@ export function SearchPopOver() {
         }
       })
       .catch((error) => {
-        console.log(error);
+        updateError(true);
+        updateErrorText((error as Error).message);
       });
   }
 

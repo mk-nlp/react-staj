@@ -10,9 +10,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { WeatherDetailProvider } from "./contexts/weatherDetailContext";
 import { ErrorProvider } from "./contexts/errorContext";
 import { PreviousCitiesProvider } from "./contexts/previousCitiesContext";
-import VallaPage from "./pages/vallaPage";
-import RealRestrauntPage from "./pages/realRestrauntPage";
-
+import HotelPage from "./pages/hotelPage";
+import RestrauntPage from "./pages/realRestrauntPage";
 // Animation for the page transition
 const animateUp = {
   hidden: { opacity: 0, y: "100vh" }, // Transitions in the y-axis, bottom to top. Change vh to vw for left to right
@@ -81,7 +80,7 @@ function Content() {
           variants={animateUp}
           transition={UpTransition}
         >
-          <VallaPage/>
+          <HotelPage/>
         </motion.div>
       )}
       {hotelPage && (
@@ -93,7 +92,7 @@ function Content() {
           variants={animateUp}
           transition={UpTransition}
         >
-          <RealRestrauntPage/>
+          <RestrauntPage/>
         </motion.div>
       )}
     </AnimatePresence>
