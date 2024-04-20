@@ -10,6 +10,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { WeatherDetailProvider } from "./contexts/weatherDetailContext";
 import { ErrorProvider } from "./contexts/errorContext";
 import { PreviousCitiesProvider } from "./contexts/previousCitiesContext";
+import VallaPage from "./pages/vallaPage";
+import RealRestrauntPage from "./pages/realRestrauntPage";
 
 // Animation for the page transition
 const animateUp = {
@@ -25,7 +27,7 @@ const UpTransition = {
 };
 
 function Content() {
-  const { searchSuccess } = useContext(SearchSuccessContext);
+  const { searchSuccess, restaurantPage, hotelPage } = useContext(SearchSuccessContext);
   const [transition, setTransition] = useState("hidden");
 
   // Here, we are reserving time for the result page to load before transitioning
@@ -41,7 +43,7 @@ function Content() {
   // when the search is successful.
   // I use the searchSuccess state here as a dependency to trigger the transition.
   useEffect(() => {
-    searchSuccess ? smoothTransition() : setTransition("hidden");
+    searchSuccess || restaurantPage || hotelPage ? smoothTransition() : setTransition("hidden");
   }, [searchSuccess]);
 
   return (
@@ -58,7 +60,7 @@ function Content() {
           <LandingPage />
         </motion.div>
       )}
-      {searchSuccess && (
+      {searchSuccess && !restaurantPage && !hotelPage &&(
         <motion.div
           key="resultPage"
           initial="hidden"
@@ -68,6 +70,30 @@ function Content() {
           transition={UpTransition}
         >
           <ResultPage />
+        </motion.div>
+      )}
+      {restaurantPage && (
+        <motion.div
+          key="restaurantPage"
+          initial="hidden"
+          animate={transition}
+          exit="exit"
+          variants={animateUp}
+          transition={UpTransition}
+        >
+          <VallaPage/>
+        </motion.div>
+      )}
+      {hotelPage && (
+        <motion.div
+          key="hotelPage"
+          initial="hidden"
+          animate={transition}
+          exit="exit"
+          variants={animateUp}
+          transition={UpTransition}
+        >
+          <RealRestrauntPage/>
         </motion.div>
       )}
     </AnimatePresence>

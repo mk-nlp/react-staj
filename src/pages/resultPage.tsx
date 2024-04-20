@@ -21,6 +21,8 @@ import { WeatherDetails } from "@/components/weatherDetails";
 import { WeatherForecast } from "@/components/weatherForecast";
 import { SearchAnotherButton } from "@/components/searchAnother";
 import { ForgetAboutMe } from "@/components/forgetAboutMe";
+import { RestaurantButton } from "@/components/Restaurant";
+import { HotelButton } from "@/components/Hotel";
 
 const ResultPage = () => {
   // Context values come from the WeatherDetailContext, updated by the LandingPage at this stage of the application.
@@ -41,6 +43,7 @@ const ResultPage = () => {
   const [currentIcon, UpdateCurrentIcon] = useState(WeatherSitRepClearDay);
   const fourDaysAfter = useFourDaysAfterToday();
   const [dailyIcons, setDailyIcons] = useState([]); // This state is used to store the daily weather icons.
+
 
   function useFourDaysAfterToday() {
     // The day value is in the format "day, month dayOfMonth, year". We only need the day.
@@ -208,6 +211,12 @@ const ResultPage = () => {
             dailyMaxTemperature={dailyMaxTemperature}
           />
         </div>
+      </div>
+      <div className="grid grid-cols-2 justify-center">
+        <div className="grid place-items-end mr-2">
+        <HotelButton />
+        </div>
+        <RestaurantButton />
       </div>
       <div className="grid justify-center">
         <SearchAnotherButton />
