@@ -33,6 +33,10 @@ This is a submission for the iWeather React Staj. It is a simple weather applica
 - Local storage caching for previously searched location.
 - Local storage caching for user location.
 - Option to clear the cache.
+- Fetch hotels in the vicinity of the weather result.
+- Fetch restaurants in the vicinity of the weather result
+- Give Lat-Long directions for selected hotel and restaurant.
+- Display the official website of the hotel/restaurant (if it exists)
 
 ## Technologies
 
@@ -102,6 +106,7 @@ You can also click on the "Get Current Location" button to get the weather data 
 # Limitations
 
 - The "Get Current Location" button does not work on iOS and MacOS devices as the app is not served over HTTPS by default. (Should be fine when hosted on a server with HTTPS.)
+- Currently the Hotel and Restaurant information fetching is not limited to any response size. (In some cases, there are over 4000 results that need to be rendered) and thus in some computationally weak devices, lags could become an issue.
 
 # License
 
