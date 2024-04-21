@@ -157,7 +157,7 @@ const [restraunts, setRestraunts] = useState<any[]>([]);
         ) : (
           <div className="grid col-start-3 grid-cols-1">
             <div className="grid text-2xl items-center justify-center text-center font-bold">
-              Loading hotels in {city}
+              Loading restaurants in {cityName}
             </div>
           </div>
         )}
