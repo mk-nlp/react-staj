@@ -9,7 +9,9 @@ This is a submission for the iWeather React Staj. It is a simple weather applica
   <img src="https://i.imgur.com/MyEnNHJ.png" width="220">
   <img src="https://i.imgur.com/QpSEh5E.png" width="220">
   <img src="https://i.imgur.com/XTuJsGY.png" width="220">
-  <img src="https://i.imgur.com/jm38wJR.png" width="220">
+  <img src="https://i.imgur.com/N5mKXVM.png" width="220">
+  <img src="https://i.imgur.com/AnxeJK9.png" width="220">
+  <img src="https://i.imgur.com/SMAwPxq.png.png" width="220">
   <img src="https://i.imgur.com/U9VXOhX.png" width="220">
 </p>
 
