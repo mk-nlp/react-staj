@@ -28,7 +28,7 @@ export default function RestrauntComponent ({
           <div className="grid row-start-3 row-end-4">
             <div className="grid grid-cols-2 justify-center items-center">
               <Utensils className=""/>
-              <div className="text-3xl font-extrabold">{restaurantName}</div>
+              <div className="text-2xl font-extrabold ">{restaurantName}</div>
             </div>
           </div>
           <div className="grid grid-rows-1 col-start-1 row-start-4 row-end-5">

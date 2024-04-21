@@ -127,7 +127,7 @@ const [restraunts, setRestraunts] = useState<any[]>([]);
         {restraunts && (restraunts as any).elements ? (
           <div className="grid col-start-3 grid-cols-1">
             <div className="grid text-3xl items-center justify-center text-center font-bold">
-              Restaurants in {city} - {country}
+              Restaurants in {city}
               <div className=" text-sm">
                 {((restraunts as any).elements || []).length} restaurants available
               </div>
@@ -157,7 +157,7 @@ const [restraunts, setRestraunts] = useState<any[]>([]);
         ) : (
           <div className="grid col-start-3 grid-cols-1">
             <div className="grid text-2xl items-center justify-center text-center font-bold">
-              Loading hotels in {cityName}
+              Loading hotels in {city}
             </div>
           </div>
         )}
